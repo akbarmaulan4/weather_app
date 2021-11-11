@@ -33,7 +33,7 @@ dependencies:
   shared_preferences:
   geolocator: ^6.0.0
   geocoder: ^0.2.1
-  rxdart: ^0.23.1
+  rxdart: ^0.26.0
   intl: ^0.16.1
   flutter_svg: ^0.22.0
   liquid_pull_to_refresh: ^3.0.0

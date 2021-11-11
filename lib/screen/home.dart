@@ -7,8 +7,10 @@ import 'package:weather_app/model/daily/daily_model.dart';
 import 'package:weather_app/model/main/main_model.dart';
 import 'package:weather_app/model/weather/weather_model.dart';
 import 'package:weather_app/utils/Utils.dart';
+import 'package:weather_app/utils/color_code.dart';
 import 'package:weather_app/utils/debouncher.dart';
 import 'package:weather_app/utils/image_assets.dart';
+import 'package:weather_app/utils/local_data.dart';
 import 'package:weather_app/widget/container_weather_widget.dart';
 import 'package:weather_app/widget/daily_weather_widget.dart';
 import 'package:weather_app/widget/last_update_widget.dart';
@@ -17,6 +19,7 @@ import 'package:weather_app/widget/font/text_meta.dart';
 import 'package:weather_app/widget/pull_refresh_widget.dart';
 import 'package:weather_app/widget/search_widget.dart';
 import 'package:weather_app/widget/weather_widget.dart';
+import 'package:weather_app/model/coord/coord_model.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -31,8 +34,17 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    getCities();
     bloc.getCurrentLocation();
   }
+
+  getCities() async{
+    String cities = await LocalData.getCities();
+    if(cities != ''){
+
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -66,6 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               onChange: (val){
                                 debouncher.run(() {
                                   if(val != ''){
+                                    // bloc.searchPlaceByQuery(val);
                                     bloc.getlocationByCity(val);
                                   }
                                 });
@@ -86,13 +99,13 @@ class _HomeScreenState extends State<HomeScreen> {
                               return StreamBuilder(
                                 stream: bloc.currLoc,
                                 builder: (context, snapshot) {
-                                  Position pos;
+                                  CoordModel coord;
                                   if(snapshot.data != null){
-                                    pos = snapshot.data;
+                                    coord = snapshot.data;
                                   }
                                   return LocationWidget(
                                     city: city,
-                                    pos: pos,
+                                    pos: coord,
                                   );
                                 }
                               );
@@ -134,7 +147,11 @@ class _HomeScreenState extends State<HomeScreen> {
                               }
                               return LastUpdateWidget(date: date);
                             }
-                          )
+                          ),
+
+                          ListTile(title: TextMeta('')),
+                          ListTile(title: TextMeta('')),
+                          ListTile(title: TextMeta('')),
                         ],
                       ),
                     ),
@@ -144,6 +161,15 @@ class _HomeScreenState extends State<HomeScreen> {
             }
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          // Add your onPressed code here!
+          Navigator.pushNamed(context, '/all_cities');
+        },
+        label: const Text('Saved'),
+        icon: const Icon(Icons.save_outlined),
+        backgroundColor: Utils.colorFromHex(ColorCode.lightGreyElsimil),
       ),
     );
   }

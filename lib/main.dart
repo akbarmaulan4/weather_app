@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/screen/all_cities.dart';
 import 'package:weather_app/screen/home.dart';
+import 'package:weather_app/screen/home_local.dart';
 import 'package:weather_app/screen/test.dart';
 
 void main() {
@@ -25,6 +27,27 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: HomeScreen(),
+      onGenerateRoute: (initial){
+        switch(initial.name){
+          case '/all_cities':
+            return MaterialPageRoute(
+                builder: (context){
+                  return AllCites();
+                },
+                settings: RouteSettings());
+          case '/home_local':
+            return MaterialPageRoute(
+                builder: (context){
+                  Map<String, dynamic> arguments = null;
+                  if (initial.arguments is Map<String, dynamic>) {
+                    arguments = initial.arguments as Map<String, dynamic>;
+                  }
+                  return HomeLocal(city: arguments['city'],);
+                },
+                settings: RouteSettings());
+          default: return null;
+        }
+      }
     );
   }
 }

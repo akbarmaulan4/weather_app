@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:weather_app/model/coord/coord_model.dart';
 
 import 'font/text_meta.dart';
 
 class LocationWidget extends StatelessWidget {
   String city;
-  Position pos;
+  CoordModel pos;
   LocationWidget({this.city, this.pos});
   @override
   Widget build(BuildContext context) {
@@ -23,9 +24,9 @@ class LocationWidget extends StatelessWidget {
             children: [
               Icon(CupertinoIcons.location, size: 15, color: Colors.white,),
               SizedBox(width: 10),
-              TextMeta(pos != null ? '${pos.longitude.toString()},':'0', size: 17, color: Colors.white,),
+              TextMeta(pos != null ? '${pos.lon.toString()},':'0', size: 17, color: Colors.white,),
               SizedBox(width: 3),
-              TextMeta(pos != null ? pos.latitude.toString():'0', size: 17, color: Colors.white,),
+              TextMeta(pos != null ? pos.lat.toString():'0', size: 17, color: Colors.white,),
             ],
           )
         ],

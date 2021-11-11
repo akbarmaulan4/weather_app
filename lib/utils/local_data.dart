@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weather_app/utils/text_constant.dart';
 import 'package:weather_app/model/weather/weather_model.dart';
 import 'package:weather_app/model/main/main_model.dart';
+import 'package:weather_app/model/coord/coord_model.dart';
 
 class LocalData{
 
@@ -11,18 +12,37 @@ class LocalData{
     return prefs.clear();
   }
 
-  static void saveCoord(String val) async {
+  static void saveCities(String val) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString(TextConstant.coord, val);
+    await prefs.setString(TextConstant.cities, val);
   }
 
-  static Future<String> getCoord() async {
+  static Future<String> getCities() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var data = prefs.getString(TextConstant.coord);
+    var data = prefs.getString(TextConstant.cities);
     if (data != null && data.isNotEmpty) {
       return data;
     }
     return '';
+  }
+
+  static Future<bool> removeCities() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.remove(TextConstant.cities);
+  }
+
+  static void saveCoord(CoordModel val) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString(TextConstant.coord, json.encode(val.toJson()));
+  }
+
+  static Future<CoordModel> getCoord() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var data = prefs.getString(TextConstant.coord);
+    if (data != null && data.isNotEmpty) {
+      return CoordModel.fromJson(json.decode(data));
+    }
+    return null;
   }
 
   static Future<bool> removeCoord() async {
